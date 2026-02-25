@@ -1,9 +1,7 @@
 RegisterNetEvent("bc:abrirPanel", function()
 
-    local Player = exports.qbx_core:GetPlayer(source)
-    if not Player then return end
+    local src = source
+    if not Economia.TienePermisoBC(src) then return end
 
-    if Player.PlayerData.job.name ~= "bancocentral" then return end
-
-    TriggerClientEvent("bc:abrirUI", source, Economia)
+    TriggerClientEvent("bc:abrirUI", src, Economia)
 end)

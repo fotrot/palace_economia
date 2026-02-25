@@ -6,6 +6,8 @@ RegisterNetEvent("palace:bc:getMetricas", function()
 
     local src = source
 
+    if not Economia.TienePermisoBC(src) then return end
+
     TriggerClientEvent("palace:bc:enviarMetricas", src, {
         impuestos = Economia.TotalImpuestosRecaudados,
         decisiones = Economia.DecisionesTomadas,
@@ -17,7 +19,7 @@ end)
 CreateThread(function()
 
     while true do
-        Wait(1800000) -- 30 minutos
+        Wait(Config.Intervalos.SnapshotMetricas or 1800000) -- 30 minutos
 
         local snap = Economia.GetSnapshot()
 
