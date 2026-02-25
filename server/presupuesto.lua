@@ -5,6 +5,9 @@
 RegisterNetEvent("palace:bc:gastoPublico", function(monto)
 
     local src = source
+
+    if not Economia.TienePermisoBC(src) then return end
+
     monto = tonumber(monto)
     if not monto or monto <= 0 then return end
 

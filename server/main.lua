@@ -21,6 +21,31 @@ Economia.DecisionesTomadas = 0
 Economia.Estabilidad = 100
 Economia.EstadoPais = "ESTABLE"
 
+function Economia.TienePermisoBC(src)
+
+    local Player = exports.qbx_core:GetPlayer(src)
+    if not Player then return false end
+
+    local jobData = Player.PlayerData.job or {}
+    local requiredJob = Config.BancoCentral.Trabajo
+
+    if jobData.name ~= requiredJob then
+        return false
+    end
+
+    local permisos = Config.BancoCentral.Permisos or {}
+    local gradeName = (jobData.grade and jobData.grade.name) or ""
+
+    for _, permiso in ipairs(permisos) do
+        if gradeName == permiso then
+            return true
+        end
+    end
+
+    return false
+
+end
+
 -- =========================================
 -- RECALCULO GLOBAL ECONOMICO
 -- =========================================
@@ -90,6 +115,15 @@ end
 RegisterNetEvent("palace:bc:getEstado", function()
 
     local src = source
+
+    if not Economia.TienePermisoBC(src) then
+        TriggerClientEvent("palace:notificacionGeneral", src,
+            "Acceso denegado",
+            "No tienes permisos del Banco Central.",
+            "error"
+        )
+        return
+    end
 
     Economia.Recalcular()
 

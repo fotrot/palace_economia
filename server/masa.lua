@@ -12,6 +12,8 @@ RegisterNetEvent("palace:bc:emitirDinero", function(monto)
     local src = source
     monto = tonumber(monto)
 
+    if not Economia.TienePermisoBC(src) then return end
+
     if not monto or monto <= 0 then return end
 
     Economia.MasaMonetaria = Economia.MasaMonetaria + monto
@@ -45,6 +47,8 @@ end)
 -- =========================================
 
 RegisterNetEvent("palace:bc:modificarTasa", function(tipo)
+
+    if not Economia.TienePermisoBC(source) then return end
 
     Economia.DecisionesTomadas = Economia.DecisionesTomadas + 1
 
